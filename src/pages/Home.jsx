@@ -135,7 +135,7 @@ export default function Home() {
                 <Link
                   key={tab}
                   to={`/home/${tab}`}
-                  className={`px-4 py-2 -mb-px font-semibold transition-colors ${isActive
+                  className={`px-4 py-2 -mb-px text-sm font-semibold transition-colors ${isActive
                     ? "border-b-2 border-purple-600 text-purple-600"
                     : "text-gray-500 hover:text-purple-600"
                     }`}
