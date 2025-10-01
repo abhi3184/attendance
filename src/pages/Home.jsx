@@ -38,7 +38,7 @@ export default function Home() {
   ];
 
   return (
-    <div className="flex flex-col lg:flex-row p-4 gap-4 h-full bg-gray-50 font-sans">
+    <div className="flex flex-col lg:flex-row p-4 gap-4 h-full font-sans">
 
       {/* Left Panel */}
       <motion.div

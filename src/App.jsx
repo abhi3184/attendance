@@ -8,16 +8,17 @@ import Login from "./auth/Login";
 import ProfilePreview from "./pages/Profile-preview";
 import LeavePreview from "./pages/Leave-preview";
 import AttendancePreview from "./pages/Attendance-preview";
-import { ToastContainer } from "react-toastify";
 import ManagerLeave from "./pages/managerleave";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import PrivateRoute from "./components/ProtectedRoutes"; // import the component
 
 export default function App() {
   return (
     <BrowserRouter>
       <ToastContainer
         position="top-right"
-        autoClose={4000}  // 3 seconds
+        autoClose={4000}
         hideProgressBar={false}
         newestOnTop={false}
         closeOnClick
@@ -28,14 +29,18 @@ export default function App() {
       />
 
       <Routes>
-        {/* Redirect root to login */}
         <Route path="/" element={<Navigate to="/login" replace />} />
-
-        {/* Login route */}
         <Route path="/login" element={<Login />} />
 
-        {/* Dashboard Layout with nested routes */}
-        <Route path="/dashboard" element={<Layout />}>
+        {/* Protected routes */}
+        <Route
+          path="/dashboard"
+          element={
+            <PrivateRoute>
+              <Layout />
+            </PrivateRoute>
+          }
+        >
           <Route index element={<Navigate to="home" />} />
           <Route path="home" element={<Home />}>
             <Route index element={<Navigate to="ppreview" replace />} />
@@ -43,16 +48,13 @@ export default function App() {
             <Route path="lpreview" element={<LeavePreview />} />
             <Route path="apreview" element={<AttendancePreview />} />
           </Route>
-          <Route path="/dashboard/leave" element={<Leave />} />
-          <Route path="/dashboard/manager-leave" element={<ManagerLeave />} />
+          <Route path="leave" element={<Leave />} />
+          <Route path="manager-leave" element={<ManagerLeave />} />
           <Route path="attendance" element={<Attendance />} />
-
         </Route>
 
-        {/* Fallback */}
-        {/* <Route path="*" element={<Navigate to="/login" replace />} /> */}
+        <Route path="*" element={<Navigate to="/login" replace />} />
       </Routes>
-
     </BrowserRouter>
   );
 }

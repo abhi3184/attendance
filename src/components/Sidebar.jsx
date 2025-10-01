@@ -55,7 +55,7 @@ export default function Sidebar({ isOpen, onClose }) {
           <span className="font-bold text-lg">Logo</span>
         </div>
 
-        <div className="flex flex-col items-center gap-3">
+        <div className="flex flex-col items-center gap-1">
           {filteredTabs.map(({ key, label, icon: Icon, paths }) => {
             // ✅ Active if current location matches any of tab paths
             const isActive = location.pathname.includes(key);
