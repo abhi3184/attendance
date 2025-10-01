@@ -3,6 +3,7 @@ import React from "react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { motion, AnimatePresence } from "framer-motion";
 import ProfileImage from "../assets/logo/new_color_logo.png";
+import { FaUser, FaSignOutAlt } from "react-icons/fa";
 
 export default function ProfileDrawer({ isOpen, setIsOpen }) {
   const handleLogout = () => {
@@ -42,7 +43,7 @@ export default function ProfileDrawer({ isOpen, setIsOpen }) {
               <img
                 src={ProfileImage}
                 alt="Profile"
-                className="h-12 w-12 rounded-full border border-gray-200 shadow-sm"
+                className="h-12 w-14 border border-gray-200 shadow-sm"
               />
               <div>
                 <p className="font-semibold text-gray-800 text-sm">Abhijit Dinkar Deshmukh</p>
@@ -51,12 +52,22 @@ export default function ProfileDrawer({ isOpen, setIsOpen }) {
               </div>
             </div>
 
-            <button
-              onClick={handleLogout}
-              className="mx-4 mb-4 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 text-sm font-medium mt-auto"
-            >
-              Logout
-            </button>
+            <div className="flex justify-between items-center w-full px-4 py-2">
+              <button
+                className="flex items-center gap-2 px-4 py-2 border border-blue-500 text-blue-500 rounded hover:bg-blue-100 text-xs font-xs"
+              >
+                <FaUser />
+                My Account
+              </button>
+              <button
+                onClick={handleLogout}
+                className="flex items-center gap-2 px-4 py-2 border border-red-500 text-red-500 rounded hover:bg-red-100 hover:text-red-700 text-xs font-xs"
+              >
+                <FaSignOutAlt />
+                Logout
+              </button>
+
+            </div>
           </motion.div>
         </>
       )}
