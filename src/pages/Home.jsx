@@ -5,8 +5,11 @@ import { Link, Outlet, useLocation } from "react-router-dom";
 export default function Home() {
   const [isCheckedIn, setCheckedIn] = useState(false);
   const [secondsElapsed, setSecondsElapsed] = useState(0);
-  const [activeTab, setActiveTab] = useState("profile");
-  const tabs = ["profile", "leave", "attendance"];
+ const tabs = [
+  { path: "ppreview", label: "Profile" },
+  { path: "lpreview", label: "Leave" },
+  { path: "apreview", label: "Attendance" }
+];
   const location = useLocation();
 
   useEffect(() => {
@@ -35,19 +38,23 @@ export default function Home() {
   ];
 
   return (
-    <div className="flex flex-col lg:flex-row p-4 gap-4 min-h-screen bg-gray-50 font-sans">
+    <div className="flex flex-col lg:flex-row p-4 gap-4 h-full bg-gray-50 font-sans">
+
       {/* Left Panel */}
       <motion.div
-        className="lg:w-1/4 bg-white p-4 rounded-xl shadow-md flex flex-col items-center"
+        className="lg:w-1/4 bg-white p-6 rounded-xl flex flex-col items-center shadow-md"
+        style={{
+          maxHeight: "fit-content",
+          boxShadow: "rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset"
+        }} // only up to Check In/Out button
         initial={{ opacity: 0, x: -20 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.5 }}
-        style={{ alignSelf: "flex-start" }}
       >
         <img
           src="https://randomuser.me/api/portraits/men/32.jpg"
           alt="Profile"
-          className="w-20 h-20 rounded-full mb-3"
+          className="w-20 h-20 rounded-full mb-3 shadow-lg"
         />
         <h2 className="text-sm font-semibold text-gray-800 text-center">
           <span className="text-gray-500 text-sm">AO1</span> - Abhijit Deshmukh
@@ -62,7 +69,7 @@ export default function Home() {
           {[hours, minutes, secs].map((t, idx) => (
             <div
               key={idx}
-              className="w-10 h-10 flex items-center justify-center bg-gray-100 rounded-lg text-base font-semibold shadow text-gray-800"
+              className="w-10 h-10 flex items-center justify-center bg-gray-100 rounded-lg font-semibold text-gray-800 shadow-md"
             >
               {t}
             </div>
@@ -74,7 +81,7 @@ export default function Home() {
           {!isCheckedIn ? (
             <motion.button
               onClick={() => setCheckedIn(true)}
-              className="w-full py-2 border-2 border-green-400 bg-transparent text-green-500 font-semibold rounded-lg hover:bg-green-100 hover:text-green text-sm transition-colors duration-300"
+              className="w-full py-2 border-2 border-green-400 bg-transparent text-green-500 font-semibold rounded-lg hover:bg-green-100 hover:text-green text-sm shadow-md transition-colors duration-300"
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.97 }}
             >
@@ -83,7 +90,7 @@ export default function Home() {
           ) : (
             <motion.button
               onClick={() => setCheckedIn(false)}
-              className="w-full py-2 border-2 border-red-400 bg-transparent text-red-500 font-semibold rounded-lg hover:bg-red-100 hover:text-red text-sm transition-colors duration-300"
+              className="w-full py-2 border-2 border-red-400 bg-transparent text-red-500 font-semibold rounded-lg hover:bg-red-100 hover:text-red text-sm shadow-md transition-colors duration-300"
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.97 }}
             >
@@ -92,64 +99,50 @@ export default function Home() {
           )}
         </div>
       </motion.div>
-
-      {/* Right Panel */}
       <div className="lg:w-3/4 flex flex-col gap-4 flex-1">
-        {/* Greeting */}
-        <div className="bg-white rounded-xl shadow-md p-4">
-          <motion.div
-            className="mb-4"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-          >
+        <div
+          className="bg-white rounded-xl p-6 flex-shrink-0 shadow-lg"
+          style={{
+            boxShadow: "rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset"
+          }}
+        >
+          <motion.div className="mb-4" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
             <h1 className="text-2xl font-bold text-gray-800">Hello, Abhijit</h1>
             <p className="text-gray-400 text-sm mt-1">Have a productive day!</p>
           </motion.div>
-
-          {/* Quick Stats Cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {cards.map((card, idx) => (
-              <motion.div
-                key={idx}
-                className={`p-4 rounded-xl shadow-md flex flex-col justify-between ${card.color}`}
-                whileHover={{ scale: 1.03, boxShadow: "0px 4px 12px rgba(36, 32, 32, 0.15)" }}
-              >
-                <div className="text-2xl">{card.icon}</div>
-                <div className="mt-2">
-                  <p className="text-gray-700 font-semibold text-sm">{card.title}</p>
-                  <p className="text-lg font-bold text-gray-900">{card.value}</p>
-                </div>
-              </motion.div>
-            ))}
-          </div>
         </div>
-
-
-        {/* Tabs with Nested Routes */}
-        <div className="bg-white rounded-xl shadow-md p-4">
-          <div className="flex border-b border-gray-200 mb-4">
-            {tabs.map((tab) => {
-              const isActive = location.pathname.includes(tab);
-              return (
-                <Link
-                  key={tab}
-                  to={`/home/${tab}`}
-                  className={`px-4 py-2 -mb-px text-sm font-semibold transition-colors ${isActive
+        <div className="flex border-b border-gray-200 ">
+          {tabs.map((tab) => {
+            const isActive = location.pathname.includes(tab.path);
+            return (
+              <motion.div
+                key={tab.label}
+                whileHover={{ scale: 1.03 }} // hover animation safe
+                className={`px-4 py-2 -mb-px text-sm font-semibold transition-colors ${isActive
                     ? "border-b-2 border-purple-600 text-purple-600"
                     : "text-gray-500 hover:text-purple-600"
-                    }`}
-                >
-                  {tab.charAt(0).toUpperCase() + tab.slice(1)}
-                </Link>
-              );
-            })}
-          </div>
+                  }`}
+              >
+                <Link  to={`/dashboard/home/${tab.path}`}>{tab.label}</Link>
+              </motion.div>
+            );
+          })}
+        </div>
 
-          {/* Nested Route Outlet */}
+        {/* Scrollable Outlet */}
+        <div
+          className="overflow-y-auto flex-1 bg-white rounded-xl p-4"
+          style={{
+            maxHeight: "calc(100vh - 100px - 40px)", // header + greeting + tabs height adjust करा
+            boxShadow: "rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset"
+          }}
+        >
           <Outlet context={{ isCheckedIn, hours, minutes, secs }} />
         </div>
       </div>
+
+
+
     </div>
   );
 }

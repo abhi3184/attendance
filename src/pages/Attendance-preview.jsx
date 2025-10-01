@@ -7,7 +7,7 @@ export default function AttendancePreview() {
   ];
 
   return (
-    <div className="w-full mt-8">
+    <div className="w-full">
       <table className="w-full border-collapse">
         <tbody>
           {schedule.map((item, index) => (

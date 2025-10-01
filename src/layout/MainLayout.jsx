@@ -29,7 +29,7 @@ export default function Layout() {
         />
 
         {/* Main scrollable area */}
-        <main className="flex-1 overflow-auto p-6 bg-gray-50">
+        <main className="flex-1 overflow-hidden p-1 bg-gray-50">
           <Outlet />
         </main>
       </div>
