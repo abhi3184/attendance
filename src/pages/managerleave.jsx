@@ -38,7 +38,7 @@ export default function ManagerLeaveUI() {
   };
 
   return (
-    <div className="h-screen flex flex-col bg-gray-50 p-6 pb-20">
+    <div className="h-screen flex flex-col p-6 pb-20">
         <h1 className="font-semibold pb-2">Leave Approval</h1>
       {/* Header Cards */}
       <div className="flex flex-wrap gap-4 mb-4">

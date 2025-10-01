@@ -48,8 +48,14 @@ export default function Login() {
     try {
       const data = await login(username, password);
       localStorage.setItem("token", data.access_token);
+      const roleMap = { 1: "hr", 2: "manager", 3: "employee" };
+      const role = roleMap[data.employee.id];
       setUser(data.user);
-      navigate("/dashboard");
+      if (role === "manager") {
+        navigate("/dashboard/mhome");
+      } else {
+        navigate("/dashboard/home");
+      }
     } catch (err) {
       // error already handled via toast
       // setPasswordError(err.message);

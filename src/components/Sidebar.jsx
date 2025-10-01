@@ -16,11 +16,12 @@ const roleMap = {
 };
 
 const allTabs = [
-  { key: "home", label: "Home", paths: ["/home/ppreview", "/home/leave-preview", "/home/attendance-preview"], roles: ["admin", "hr", "employee"], icon: HomeIcon },
-  { key: "leave", label: "Leave Tracker", paths: ["/leave"], roles: ["manager", "hr", "employee"], icon: CalendarDaysIcon },
+  { key: "home", label: "Home", paths: ["/home/ppreview", "/home/leave-preview", "/home/attendance-preview"], roles: ["hr", "employee"], icon: HomeIcon },
+  { key: "home", label: "Home", paths: ["/mhome"], roles: ["manager"], icon: HomeIcon },
+  { key: "leave", label: "Leave Tracker", paths: ["/leave"], roles: ["hr", "employee"], icon: CalendarDaysIcon },
   { key: "manager-leave", label: "Leave Tracker", paths: ["/manager-leave"], roles: ["manager"], icon: CalendarDaysIcon },
   { key: "time", label: "Time Tracker", paths: ["/home/attendance"], roles: ["manager", "hr", "employee"], icon: ClockIcon },
-  { key: "attendance", label: "Attendance", paths: ["/home/attendance"], roles: ["manager", "hr", "employee"], icon: CheckCircleIcon },
+  { key: "attendance", label: "Attendance", paths: ["/home/attendance"], roles: ["hr"], icon: CheckCircleIcon },
 ];
 
 export default function Sidebar({ isOpen, onClose }) {

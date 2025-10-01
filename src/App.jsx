@@ -12,6 +12,7 @@ import ManagerLeave from "./pages/managerleave";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import PrivateRoute from "./components/ProtectedRoutes"; // import the component
+import ManagerDashboard from "./pages/ManagerDashbord";
 
 export default function App() {
   return (
@@ -31,8 +32,6 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Navigate to="/login" replace />} />
         <Route path="/login" element={<Login />} />
-
-        {/* Protected routes */}
         <Route
           path="/dashboard"
           element={
@@ -51,9 +50,10 @@ export default function App() {
           <Route path="leave" element={<Leave />} />
           <Route path="manager-leave" element={<ManagerLeave />} />
           <Route path="attendance" element={<Attendance />} />
+          <Route path="mhome" element={<ManagerDashboard />} />
         </Route>
 
-        <Route path="*" element={<Navigate to="/login" replace />} />
+        <Route path="*" element={<div>404 - page not found</div>} />
       </Routes>
     </BrowserRouter>
   );
