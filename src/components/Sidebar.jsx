@@ -47,7 +47,7 @@ export default function Sidebar({ isOpen, onClose }) {
   return (
     <aside
       className={`fixed md:static top-0 left-0 h-screen w-20 z-20
-        bg-white border-r shadow-md transform transition-transform duration-300 z-50
+        bg-white border-r shadow-md transform transition-transform duration-300 
         ${isOpen ? "translate-x-0" : "-translate-x-full"} md:translate-x-0`}
     >
       <div className="flex flex-col h-full justify-start py-4">
@@ -114,4 +114,3 @@ export default function Sidebar({ isOpen, onClose }) {
     </aside>
   );
 }
-
