@@ -1,35 +1,31 @@
+// Layout.js
 import React, { useState } from "react";
-import Sidebar from "../components/Sidebar";
 import Header from "../components/Header";
-import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import Sidebar from "../components/Sidebar";
+import { Outlet } from "react-router-dom";
 
 export default function Layout() {
-  const location = useLocation();
-  const navigate = useNavigate();
   const [isSidebarOpen, setSidebarOpen] = useState(false);
-
-  // Determine active tab from current route
-  const activeTab = location.pathname.split("/")[1] || "home";
+  const [isProfileOpen, setProfileOpen] = useState(false);
 
   return (
-    <div className="flex h-screen bg-gray-100 overflow-hidden">
-      {/* Sidebar */}
-      <Sidebar
-        activeTab={activeTab}
-        onChangeTab={(tab) => navigate(`/${tab}`)}
-        isOpen={isSidebarOpen}
-        onClose={() => setSidebarOpen(false)}
-      />
+    <div className="flex h-screen overflow-hidden bg-gray-100">
+      <Sidebar isOpen={isSidebarOpen} onClose={() => setSidebarOpen(false)} />
 
-      {/* Main Content */}
-      <div className="flex-1 flex flex-col overflow-hidden">
+      <div className="flex-1 flex flex-col overflow-hidden relative">
         <Header
-          activeTab={activeTab}
+          activeTab="Dashboard"
           onToggleSidebar={() => setSidebarOpen(!isSidebarOpen)}
+          isProfileOpen={isProfileOpen}
+          setProfileOpen={setProfileOpen}
         />
 
-        {/* Main scrollable area */}
-        <main className="flex-1 overflow-hidden p-1 bg-gray-50">
+        {/* Overlay when drawer open */}
+        {isProfileOpen && (
+          <div className="fixed inset-0 bg-black/20 z-30"></div>
+        )}
+
+        <main className={`flex-1 overflow-hidden p-4 relative z-10`}>
           <Outlet />
         </main>
       </div>

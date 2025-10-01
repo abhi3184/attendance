@@ -26,8 +26,8 @@ const summaryData = [
   },
   {
     id: 3,
-    label: "Approved",
-    type: "Sick Leave",
+    label: "Sick Leave",
+    type: "sick",
     icon: FaStethoscope,
     booked: 3,
     available: 5,
@@ -45,10 +45,27 @@ const leaveRequests = [
   { id: 5, type: "Sick Leave", from: "2025-10-22", to: "2025-10-23", status: "Approved" },
 ];
 
+// Upcoming holidays data
+const upcomingHolidays = [
+  { date: "2025-10-02", description: "Gandhi Jayanti" },
+  { date: "2025-10-17", description: "Diwali" },
+  { date: "2025-10-25", description: "Dussehra" },
+];
+
 const statusStyles = {
   Pending: { bg: "bg-yellow-50", text: "text-yellow-800" },
   Approved: { bg: "bg-green-50", text: "text-green-800" },
   Rejected: { bg: "bg-red-50", text: "text-red-800" },
+};
+
+const formatHolidayDate = (dateString) => {
+  const date = new Date(dateString);
+  const weekdays = ["SUNDAY","MONDAY","TUESDAY","WEDNESDAY","THURSDAY","FRIDAY","SATURDAY"];
+  const day = String(date.getDate()).padStart(2, "0");
+  const month = date.toLocaleString("en-US", { month: "short" }).toUpperCase();
+  const year = date.getFullYear();
+  const weekday = weekdays[date.getDay()];
+  return `${day}-${month}-${year} , ${weekday}`;
 };
 
 export default function Leave() {
@@ -83,38 +100,65 @@ export default function Leave() {
 
       {/* Leave Summary */}
       {activeTab === "summary" && (
-        <div className="flex flex-wrap gap-6">
-          {summaryData.map((card) => {
-            const Icon = card.icon;
+        <>
+          {/* Summary Cards */}
+          <div className="flex flex-wrap gap-6 mb-6">
+            {summaryData.map((card) => {
+              const Icon = card.icon;
 
-            return (
-              <motion.div
-                key={card.id}
-                className="flex-1 min-w-[220px] max-w-[220px] p-6 rounded-xl flex flex-col items-center justify-center shadow-md bg-white"
-                whileHover={{ scale: 1.05, boxShadow: "0 10px 20px rgba(0,0,0,0.15)" }}
-              >
-                <p className="text-sm font-semibold text-gray-700 mb-3">{card.label}</p>
-                <div
-                  className="p-2 rounded-lg mb-4"
-                  style={{ backgroundColor: card.bgColor, color: card.iconColor }}
+              return (
+                <motion.div
+                  key={card.id}
+                  className="flex-1 min-w-[220px] max-w-[220px] p-6 rounded-xl flex flex-col items-center justify-center shadow-md bg-white"
+                  whileHover={{ scale: 1.05, boxShadow: "0 10px 20px rgba(0,0,0,0.15)" }}
                 >
-                  <Icon className="w-6 h-6" />
-                </div>
-                <div className="flex justify-between w-full mt-2">
-                  <div className="flex flex-col">
-                    <span className="text-xs font-medium text-gray-500 mb-3">Available</span>
-                    <span className="text-xs font-medium text-gray-500">Booked</span>
+                  <p className="text-sm font-semibold text-gray-700 mb-3">{card.label}</p>
+                  <div
+                    className="p-3 rounded-lg mb-4"
+                    style={{ backgroundColor: card.bgColor, color: card.iconColor }}
+                  >
+                    <Icon className="w-6 h-6" />
+                  </div>
+                  <div className="flex justify-between w-full mt-2">
+                    <div className="flex flex-col">
+                      <span className="text-xs font-medium text-gray-500 mb-1">Available</span>
+                      <span className="text-xs font-medium text-gray-500">Booked</span>
+                    </div>
+                    <div className="flex flex-col items-end">
+                      <span className="text-xs font-bold text-green-600 mb-1">{card.available}</span>
+                      <span className="text-xs font-bold text-gray-800">{card.booked}</span>
+                    </div>
+                  </div>
+                </motion.div>
+              );
+            })}
+          </div>
 
-                  </div>
-                  <div className="flex flex-col">
-                    <span className="text-xs font-bold text-green-600 mb-3">{card.booked}</span>
-                    <span className="text-xs font-bold text-black-600">{card.available}</span>
-                  </div>
-                </div>
-              </motion.div>
-            );
-          })}
-        </div>
+          {/* Upcoming Holidays Table */}
+          <div className="bg-white rounded-xl shadow-md border border-gray-200 overflow-hidden">
+            <h2 className="px-6 py-3 text-sm font-semibold border-b border-gray-200">
+              Upcoming Holidays
+            </h2>
+            <div className="overflow-x-auto">
+              <table className="min-w-full divide-y divide-gray-200">
+                <thead className="bg-gray-100">
+                  <tr>
+                    <th className="px-4 py-2 text-left text-sm font-semibold text-gray-600">Date</th>
+                    <th className="px-4 py-2 text-left text-sm font-semibold text-gray-600">Description</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-100">
+                  {upcomingHolidays.map((holiday, idx) => (
+                    <tr key={idx} className="hover:bg-gray-50">
+                      <td className="px-4 py-2 text-xs text-gray-700">{formatHolidayDate(holiday.date)}</td>
+                      <td className="px-4 py-2 text-xs text-gray-700">{holiday.description}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </>
       )}
 
       {/* Leave Requests */}
@@ -124,9 +168,7 @@ export default function Leave() {
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-100 sticky top-0 z-10">
                 <tr>
-                  <th className="px-4 py-2 text-left text-sm font-semibold text-gray-600">
-                    Leave Type
-                  </th>
+                  <th className="px-4 py-2 text-left text-sm font-semibold text-gray-600">Leave Type</th>
                   <th className="px-4 py-2 text-left text-sm font-semibold text-gray-600">From</th>
                   <th className="px-4 py-2 text-left text-sm font-semibold text-gray-600">To</th>
                   <th className="px-4 py-2 text-left text-sm font-semibold text-gray-600">Status</th>
@@ -158,7 +200,7 @@ export default function Leave() {
                         <motion.button
                           whileHover={{ scale: 1.05 }}
                           whileTap={{ scale: 0.95 }}
-                          onClick={() => setRequests(requests.filter((r) => r.id !== req.id))}
+                          onClick={() => handleCancel(req.id)}
                           className="px-3 py-1 bg-red-500 text-white rounded shadow text-xs font-medium hover:bg-red-600"
                         >
                           Cancel

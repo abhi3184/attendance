@@ -17,10 +17,10 @@ const roleMap = {
 
 const allTabs = [
   { key: "home", label: "Home", paths: ["/home/ppreview", "/home/leave-preview", "/home/attendance-preview"], roles: ["admin", "hr", "employee"], icon: HomeIcon },
-  { key: "leave", label: "Leave Tracker", paths: ["/leave"], roles: ["admin", "hr", "employee"], icon: CalendarDaysIcon },
-  { key: "manager-leave", label: "Leave Tracker", paths: ["/manager-leave"], roles: ["employee","manager"], icon: CalendarDaysIcon },
-  { key: "time", label: "Time Tracker", paths: ["/home/attendance"], roles: ["admin", "hr", "employee"], icon: ClockIcon },
-  { key: "attendance", label: "Attendance", paths: ["/home/attendance"], roles: ["admin", "hr", "employee"], icon: CheckCircleIcon },
+  { key: "leave", label: "Leave Tracker", paths: ["/leave"], roles: ["manager", "hr", "employee"], icon: CalendarDaysIcon },
+  { key: "manager-leave", label: "Leave Tracker", paths: ["/manager-leave"], roles: ["manager"], icon: CalendarDaysIcon },
+  { key: "time", label: "Time Tracker", paths: ["/home/attendance"], roles: ["manager", "hr", "employee"], icon: ClockIcon },
+  { key: "attendance", label: "Attendance", paths: ["/home/attendance"], roles: ["manager", "hr", "employee"], icon: CheckCircleIcon },
 ];
 
 export default function Sidebar({ isOpen, onClose }) {
@@ -46,7 +46,7 @@ export default function Sidebar({ isOpen, onClose }) {
 
   return (
     <aside
-      className={`fixed md:static top-0 left-0 h-screen w-20
+      className={`fixed md:static top-0 left-0 h-screen w-20 z-20
         bg-white border-r shadow-md transform transition-transform duration-300 z-50
         ${isOpen ? "translate-x-0" : "-translate-x-full"} md:translate-x-0`}
     >
