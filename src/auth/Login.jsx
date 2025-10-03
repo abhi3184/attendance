@@ -6,6 +6,7 @@ import { useAuth } from "../hooks/useAuth";
 import { AuthContext } from "../context/AuthContext";
 import { toast } from "react-toastify";
 import "./Login.css";
+import { getUserRole } from "../utils/JWTHelper";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -48,17 +49,15 @@ export default function Login() {
     try {
       const data = await login(username, password);
       localStorage.setItem("token", data.access_token);
-      const roleMap = { 1: "hr", 2: "manager", 3: "employee" };
-      const role = roleMap[data.employee.id];
-      setUser(data.user);
-      if (role === "manager") {
+      const roles = getUserRole(data.access_token);
+      if (roles === "Manager") {
         navigate("/dashboard/mhome");
-      } else {
+      }else if(roles === "Hr"){
+        navigate("/dashboard/hrhome");
+      }else{
         navigate("/dashboard/home");
       }
     } catch (err) {
-      // error already handled via toast
-      // setPasswordError(err.message);
     }
   };
 

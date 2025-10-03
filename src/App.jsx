@@ -31,20 +31,27 @@ export default function App() {
 
           <Route path="/dashboard" element={<PrivateRoute><Layout /></PrivateRoute>}>
             <Route index element={<RoleRedirect />} />
-            <Route path="home" element={<Home />} />
-            <Route path="leave" element={<Leave />} />
-            <Route path="attendance" element={<Attendance />} />
-            <Route path="mhome" element={<ManagerDashboard />} />
-            <Route path="mleave" element={<ManagerLeave />} />
-            <Route path="overview" element={<TeamOverview />} />
-            <Route path="mattendance" element={<ManagerAttendance />} />
-            <Route path="emanagement" element={<EmployeeManagement />} />
-            <Route path="eleave" element={<LeaveRequests />} />
-            <Route path="hattendance" element={<HrAttendance />} />
-            <Route path="payroll" element={<Payroll />} />
-            <Route path="holiday" element={<Holiday />} />
-          </Route>
 
+            {/* Employee routes */}
+            <Route path="home" element={<PrivateRoute allowedRoles={['Employee']}><Home /></PrivateRoute>} />
+            <Route path="leave" element={<PrivateRoute allowedRoles={['Employee']}><Leave /></PrivateRoute>} />
+            <Route path="attendance" element={<PrivateRoute allowedRoles={['Employee']}><Attendance /></PrivateRoute>} />
+
+            {/* Manager routes */}
+            <Route path="mhome" element={<PrivateRoute allowedRoles={['Manager']}><ManagerDashboard /></PrivateRoute>} />
+            <Route path="mleave" element={<PrivateRoute allowedRoles={['Manager']}><ManagerLeave /></PrivateRoute>} />
+            <Route path="overview" element={<PrivateRoute allowedRoles={['Manager']}><TeamOverview /></PrivateRoute>} />
+            <Route path="mattendance" element={<PrivateRoute allowedRoles={['Manager']}><ManagerAttendance /></PrivateRoute>} />
+
+            {/* HR routes */}
+            <Route path="emanagement" element={<PrivateRoute allowedRoles={['Hr']}><EmployeeManagement /></PrivateRoute>} />
+            <Route path="eleave" element={<PrivateRoute allowedRoles={['Hr']}><LeaveRequests /></PrivateRoute>} />
+            <Route path="hattendance" element={<PrivateRoute allowedRoles={['Hr']}><HrAttendance /></PrivateRoute>} />
+            <Route path="payroll" element={<PrivateRoute allowedRoles={['Hr']}><Payroll /></PrivateRoute>} />
+            <Route path="hrhome" element={<PrivateRoute allowedRoles={['Hr']}><Home /></PrivateRoute>} />
+            <Route path="holiday" element={<PrivateRoute allowedRoles={['Hr']}><Holiday /></PrivateRoute>} />
+
+          </Route>
           <Route path="*" element={<div>404 - page not found</div>} />
         </Routes>
       </Suspense>

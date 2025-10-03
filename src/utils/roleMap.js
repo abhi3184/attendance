@@ -1,7 +1,7 @@
 export const roleMap = {
-  1: "hr",
-  2: "manager",
-  3: "employee",
+  "Hr": "hr",
+  "Manager": "manager",
+  "Employee": "employee",
 };
 
 export const roleHomePath = {
@@ -19,7 +19,7 @@ export const sidebarTabs = [
 
 
   //Hr
-  { key: "home", path:'home', label: "Home", roles: ["hr"], icon: "HomeIcon" },
+  { key: "home", path:'hrhome', label: "Home", roles: ["hr"], icon: "HomeIcon" },
   { key: "employeemanagement", path:'emanagement', label: "Employee", roles: ["hr"], icon: "UserGroupIcon" },
   { key: "leaverequest", path:'eleave', label: "Leave Tracker", roles: ["hr"], icon: "CalendarDaysIcon" },
   { key: "hrattendance", path:'hattendance', label: "Attendance", roles: ["hr"], icon: "ClockIcon" },
