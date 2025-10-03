@@ -1,16 +1,24 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Link, Outlet, useLocation } from "react-router-dom";
+import { SunIcon, CloudIcon } from "@heroicons/react/24/solid";
+
+// Import your tab components
+import ProfilePreview from "./Profile-preview";
+import LeavePreview from "./Leave-preview";
+import AttendancePreview from "./Attendance-preview";
+import Holidays from "./Holidays";
 
 export default function Home() {
   const [isCheckedIn, setCheckedIn] = useState(false);
   const [secondsElapsed, setSecondsElapsed] = useState(0);
- const tabs = [
-  { path: "ppreview", label: "Profile" },
-  { path: "lpreview", label: "Leave" },
-  { path: "apreview", label: "Attendance" }
-];
-  const location = useLocation();
+  const [activeTab, setActiveTab] = useState("ppreview"); // default tab
+
+  const tabs = [
+    { path: "ppreview", label: "Profile" },
+    { path: "lpreview", label: "Leave" },
+    { path: "apreview", label: "Attendance" },
+    { path: "holidays", label: "Holidays" },
+  ];
 
   useEffect(() => {
     let interval = null;
@@ -30,15 +38,18 @@ export default function Home() {
   };
   const [hours, minutes, secs] = formatTime(secondsElapsed);
 
-  const cards = [
-    { title: "Today Attendance", value: isCheckedIn ? "Present" : "Absent", color: "bg-green-100", icon: "🟢" },
-    { title: "Pending Leaves", value: 2, color: "bg-yellow-100", icon: "🟡" },
-    { title: "Projects", value: 5, color: "bg-blue-100", icon: "🔵" },
-    { title: "Tasks", value: 8, color: "bg-purple-100", icon: "🟣" },
-  ];
+  // Map tab paths to components
+  const tabComponents = {
+    ppreview: ProfilePreview,
+    lpreview: LeavePreview,
+    apreview: AttendancePreview,
+    holidays: Holidays,
+  };
+
+  const ActiveComponent = tabComponents[activeTab];
 
   return (
-    <div className="flex flex-col lg:flex-row p-4 gap-4 h-full font-sans">
+    <div className="flex flex-col lg:flex-row p-4 gap-4 h-full font-sans pb-0">
 
       {/* Left Panel */}
       <motion.div
@@ -46,7 +57,7 @@ export default function Home() {
         style={{
           maxHeight: "fit-content",
           boxShadow: "rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset"
-        }} // only up to Check In/Out button
+        }}
         initial={{ opacity: 0, x: -20 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.5 }}
@@ -99,50 +110,68 @@ export default function Home() {
           )}
         </div>
       </motion.div>
+
+      {/* Right Panel */}
       <div className="lg:w-3/4 flex flex-col gap-4 flex-1">
+
         <div
-          className="bg-white rounded-xl p-6 flex-shrink-0 shadow-lg"
-          style={{
-            boxShadow: "rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset"
-          }}
-        >
-          <motion.div className="mb-4" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
-            <h1 className="text-2xl font-bold text-gray-800">Hello, Abhijit</h1>
-            <p className="text-gray-400 text-sm mt-1">Have a productive day!</p>
+         className="relative w-full h-20 p-4 bg-gradient-to-r from-blue-200 to-blue-400 rounded-xl overflow-hidden flex items-center">
+
+          {/* Left Content */}
+          <motion.div
+            className="relative z-10 "
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8 }}
+            
+          >
+            <h1 className="text-1xl font-bold text-gray-800">Good Morning, Abhijit</h1>
+            <p className="text-gray-600 mt-1 text-sm">Have a productive day!</p>
+          </motion.div>
+
+          {/* Animated Sun on Right */}
+          <motion.div
+            className="absolute right-6"
+            animate={{ rotate: [0, 360] }}
+            transition={{ repeat: Infinity, duration: 20, ease: "linear" }}
+          >
+            <SunIcon className="h-10 w-10 text-yellow-400 drop-shadow-lg" />
           </motion.div>
         </div>
+
+        {/* Tabs */}
         <div className="flex border-b border-gray-200 ">
           {tabs.map((tab) => {
-            const isActive = location.pathname.includes(tab.path);
+            const isActive = activeTab === tab.path;
             return (
               <motion.div
                 key={tab.label}
-                whileHover={{ scale: 1.03 }} // hover animation safe
-                className={`px-4 py-2 -mb-px text-sm font-semibold transition-colors ${isActive
-                    ? "border-b-2 border-purple-600 text-purple-600"
-                    : "text-gray-500 hover:text-purple-600"
+                whileHover={{ scale: 1.03 }}
+                className={`px-4 py-2 -mb-px text-sm font-semibold transition-colors cursor-pointer ${isActive
+                  ? "border-b-2 border-purple-600 text-purple-600"
+                  : "text-gray-500 hover:text-purple-600"
                   }`}
+                onClick={() => setActiveTab(tab.path)}
               >
-                <Link  to={`/dashboard/home/${tab.path}`}>{tab.label}</Link>
+                {tab.label}
               </motion.div>
             );
           })}
         </div>
 
-        {/* Scrollable Outlet */}
+        {/* Active Tab Content */}
         <div
-          className="overflow-y-auto flex-1 bg-white rounded-xl p-4"
+          className="flex-1 overflow-auto bg-white rounded-xl p-4"
           style={{
-            maxHeight: "calc(100vh - 100px - 40px)", // header + greeting + tabs height adjust करा
-            boxShadow: "rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset"
+            maxHeight: "calc(100vh - 100px - 40px)",
+            boxShadow: "0 4px 12px rgba(0,0,0,0.08), 0 2px 6px rgba(0,0,0,0.05)"
           }}
         >
-          <Outlet context={{ isCheckedIn, hours, minutes, secs }} />
+          <div className="min-h-full">
+            <ActiveComponent isCheckedIn={isCheckedIn} hours={hours} minutes={minutes} secs={secs} />
+          </div>
         </div>
       </div>
-
-
-
     </div>
   );
 }

@@ -9,7 +9,7 @@ export default function ProfileTab() {
   ];
 
   return (
-    <div className="w-full p-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+    <div className="w-full p-1 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
       {profileCards.map((card, index) => (
         <div key={index} className="flex items-center bg-white p-4 rounded-lg ">
           {/* Icon on the left */}

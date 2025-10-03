@@ -14,7 +14,7 @@ const initialRequests = [
   { id: 10, employee: "Rhea Kapoor", type: "Casual Leave", from: "2025-10-29", to: "2025-10-30", status: "Rejected" },
 ];
 
-export default function ManagerLeaveUI() {
+export default function ManagerLeave() {
   const [requests, setRequests] = useState(initialRequests);
 
   const handleAction = (id, action) => {
